@@ -3,7 +3,6 @@ const router = new Router()
 const service = require('../../service/music.service')
 const HttpStatus = require('http-status-codes')
 const Song = require('../../model/song')
-const mongoose = require('mongoose')
 
 router.get('/', (req, res) => {
     service.find(req.query)
@@ -18,7 +17,7 @@ router.get('/', (req, res) => {
 
 router.post('/favorite', (req, res) => {
     const song = new Song({
-        _id: new mongoose.Types.ObjectId(),
+        _id: req.body.trackId,
         wrapperType: req.body.wrapperType,
         kind: req.body.kind,
         artistId: req.body.artistId,
