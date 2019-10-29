@@ -3,8 +3,6 @@ const app = express()
 const router = require('./router')
 const setupConfig = require('./config')
 const constants = require('./util/constants')
-const dotenv = require('dotenv')
-dotenv.config()
 
 setupConfig(app)
 
