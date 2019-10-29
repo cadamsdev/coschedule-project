@@ -30,9 +30,11 @@ export class HomeComponent implements OnInit {
       .getMusic(this.search)
       .subscribe((response) => {
         this.songs = response;
+        this.search = null;
       })
     } else {
       this.songs = [];
+      this.search = null;
     }
   }
 
