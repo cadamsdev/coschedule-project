@@ -30,4 +30,8 @@ export class AppComponent implements OnInit {
     }
   }
 
+  onFavorite(song: Song) {
+
+  }
+
 }

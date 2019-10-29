@@ -17,7 +17,9 @@
         <div *ngFor="let song of songs" class="col-4 mb-5">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title text-center">{{song.trackName}}</h5>
+                <img class="img-fluid favorite-icon" style="width: 32px; position: absolute; top: 5px; right: 5px;" src="assets/icons/favorite-icon.png"
+                data-toggle="tooltip" title="Favorite" (click)="onFavorite(song)" />
+                <h5 class="card-title text-center" style="margin-top: 5px;">{{song.trackName}}</h5>
                 <p class="card-text text-center">{{song.artistName}}</p>
                 <img class="img-fluid rounded mx-auto d-block" style="margin-bottom: 5px;" src="{{song.artworkUrl100}}" />
 
