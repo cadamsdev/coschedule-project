@@ -1,8 +1,8 @@
 const { Router } = require('express')
 const router = new Router()
-const service = require('../../service/music.service')
+const service = require('../service/music.service')
 const HttpStatus = require('http-status-codes')
-const Song = require('../../model/song')
+const Song = require('../model/song')
 
 router.get('/', (req, res) => {
     service.find(req.query)
