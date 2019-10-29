@@ -1,10 +1,12 @@
 const express = require('express')
 const app = express()
 const router = require('./router')
+const setupConfig = require('./config')
+const constants = require('./util/constants')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const constants = require('./util/constants')
+setupConfig(app)
 
 app.use('', router)
 
