@@ -18,10 +18,16 @@ export class HomeComponent implements OnInit {
   songs: Song[];
   alert: Alert;
 
+  discoverySongs: Song[];
+
   constructor(private readonly service: MusicService) { }
 
   ngOnInit(): void {
-
+    this.service
+    .getDiscover()
+    .subscribe((response) => {
+      this.discoverySongs = response;
+    })
   }
 
   onSearch() {
@@ -33,7 +39,7 @@ export class HomeComponent implements OnInit {
         this.search = null;
       })
     } else {
-      this.songs = [];
+      this.songs = null;
       this.search = null;
     }
   }
@@ -45,7 +51,6 @@ export class HomeComponent implements OnInit {
   onFavorite(song: Song) {
     this.service.saveFavorite(song)
     .subscribe((response) => {
-      console.log('saved favorite')
       this.alert = new Alert(AlertType.SUCCESS, "Success! Your favorite was saved!");
     }, err => {
       this.alert = new Alert(AlertType.ERROR, "Oops, there was an error.");

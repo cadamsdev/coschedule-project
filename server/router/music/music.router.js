@@ -15,6 +15,17 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/discover', (req, res) => {
+    service.discover()
+    .then((response) => {
+        res.send(response.data.results)
+    })
+    .catch((error) => {
+        response.status(HttpStatus.BAD_REQUEST)
+        response.send(error.response)
+    })
+})
+
 router.get('/favorites', (req, res) => {
     Song.find()
     .exec()
