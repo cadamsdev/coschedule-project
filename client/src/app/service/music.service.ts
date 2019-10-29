@@ -20,6 +20,11 @@ export class MusicService {
     return this.http.get<Song[]>(url, { params: httpParams })
   }
 
+  getFavorites(): Observable<Song[]> {
+    const url = `${environment.baseUrl}/music/favorites`
+    return this.http.get<Song[]>(url)
+  }
+
   saveFavorite(song: Song): Observable<void> {
     const url = `${environment.baseUrl}/music/favorite`
     return this.http.post<void>(url, song)
