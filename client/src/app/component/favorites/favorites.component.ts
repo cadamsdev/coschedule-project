@@ -3,6 +3,7 @@ import { Alert } from './../../model/alert';
 import { MusicService } from './../../service/music.service';
 import { Song } from './../../model/song';
 import { Component, OnInit } from '@angular/core';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorites',
@@ -32,7 +33,18 @@ export class FavoritesComponent implements OnInit {
   }
 
   onFavorite(song: Song) {
-    // remove favorite
+    this.service.deleteFavorite(song)
+    .pipe(
+      flatMap(() => {
+        this.alert = new Alert(AlertType.SUCCESS, `Successfully deleted ${song.trackName}!`)
+        return this.service.getFavorites()
+      })
+    )
+    .subscribe((songs) => {
+      this.songs = songs;
+    }, err => {
+      this.alert = new Alert(AlertType.ERROR, 'Oops there was an error.')
+    })
   }
 
 }

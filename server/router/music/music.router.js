@@ -28,6 +28,21 @@ router.get('/favorites', (req, res) => {
     })
 })
 
+router.delete("/favorite/:trackId", (req, res, next) => {
+    Song.deleteOne({
+        _id: req.params.trackId
+    })
+    .exec()
+    .then(result => {
+        res.status(HttpStatus.OK).json(result)
+    })
+    .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            error: err.message
+        })
+    })
+})
+
 router.post('/favorite', (req, res) => {
     const song = new Song({
         _id: req.body.trackId,

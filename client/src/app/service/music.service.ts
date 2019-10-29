@@ -25,6 +25,11 @@ export class MusicService {
     return this.http.get<Song[]>(url)
   }
 
+  deleteFavorite(song: Song): Observable<void> {
+    const url = `${environment.baseUrl}/music/favorite/${song.trackId}`
+    return this.http.delete<void>(url)
+  }
+
   saveFavorite(song: Song): Observable<void> {
     const url = `${environment.baseUrl}/music/favorite`
     return this.http.post<void>(url, song)
