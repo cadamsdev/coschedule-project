@@ -15,6 +15,19 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/favorites', (req, res) => {
+    Song.find()
+    .exec()
+    .then(songs => {
+        res.status(HttpStatus.OK).json(songs)
+    })
+    .catch(err => {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            error: err
+        })
+    })
+})
+
 router.post('/favorite', (req, res) => {
     const song = new Song({
         _id: req.body.trackId,
