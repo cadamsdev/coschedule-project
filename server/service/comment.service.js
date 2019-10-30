@@ -22,6 +22,20 @@ function deleteOne(id) {
     .exec()
 }
 
+function updateOne(req) {
+    return Comment.updateOne(
+    {
+        _id: req.params.id
+    },
+    {
+        $set: {
+            msg: req.body.msg
+        }
+    })
+    .exec()
+}
+
 exports.find = find
 exports.save = save
 exports.deleteOne = deleteOne
+exports.updateOne = updateOne

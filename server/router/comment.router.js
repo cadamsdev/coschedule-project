@@ -26,6 +26,17 @@ router.post('/', (req, res) => {
     })
 })
 
+router.patch('/:id', (req, res) => {
+    service.updateOne(req)
+    .then((result) => {
+        console.log(result)
+        res.status(HttpStatus.OK).json(result)
+    })
+    .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json(err)
+    })
+})
+
 router.delete('/:id', (req, res) => {
     service.deleteOne(req.params.id)
     .then(() => {
