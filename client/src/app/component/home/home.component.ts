@@ -21,12 +21,14 @@ export class HomeComponent implements OnInit {
   search: string;
   songs: Song[];
   alert: Alert;
-  comment: String;
+  selectedComment: Comment;
   selectedSong: Song;
   comments: Comment[];
   discoverySongs: Song[];
 
   commentMap = new Map<number, Comment[]>();
+
+  private _comment: String;
 
   constructor(
     private readonly service: MusicService,
@@ -70,8 +72,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  addComment() {
-    if (this.comment && this.selectedSong) {
+  addComment(): void {
+    console.log('adding comment')
+    if (this.comment && this.selectedSong && !this.selectedComment) {
       this.commentService
       .addComment({
         _id: '-1',
@@ -86,9 +89,50 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((comments) => {
         this.comment = null
+        this.selectedComment = null;
         this.updateCommentMap(comments);
         this.comments = this.commentMap.get(this.selectedSong.trackId)
       })
+    }
+  }
+
+  updateComment() {
+    if (this.comment && this.selectedSong && this.selectedComment) {
+      this.commentService
+      .updateComment(this.selectedComment)
+      .pipe(
+        flatMap(() => {
+          return this.commentService.getAll()
+        })
+      )
+      .subscribe((comments) => {
+        this.comment = null
+        this.selectedComment = null;
+        this.updateCommentMap(comments);
+        this.comments = this.commentMap.get(this.selectedSong.trackId)
+      })
+    }
+  }
+
+  onSelectComment(comment: Comment) {
+    this.selectedComment = comment
+    this.comment = comment.msg
+  }
+
+  get comment(): String {
+    let comment = this._comment
+    if (this.selectedComment) {
+      comment = this.selectedComment.msg
+    }
+    return comment
+  }
+
+  set comment(value: String) {
+    if (this.selectedComment) {
+      this.selectedComment.msg = value
+      this._comment = value
+    } else {
+      this._comment = value
     }
   }
 

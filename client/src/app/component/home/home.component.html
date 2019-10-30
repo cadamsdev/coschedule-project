@@ -114,14 +114,20 @@
       </div>
       <div class="modal-body">
           <ul *ngIf="comments" class="list-group">
-              <li *ngFor="let comment of comments" class="list-group-item" style="margin-bottom: 5px;">{{comment.msg}}</li>
+              <li *ngFor="let comment of comments" class="list-group-item list-group-item-action" [class.active]="selectedComment && selectedComment._id === comment._id" style="margin-bottom: 5px;" (click)="onSelectComment(comment)">{{comment.msg}}</li>
             </ul>
       </div>
       <div class="modal-footer">
           <div class="input-group mb-3">
               <input type="text" class="form-control" placeholder="Add a public comment..." [(ngModel)]="comment" >
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" (click)="addComment()">Comment</button>
+                <ng-container *ngIf="selectedComment else addCommentTemplate">
+                    <button class="btn btn-outline-secondary" type="button" (click)="updateComment()">Update</button>
+                </ng-container>
+
+                <ng-template #addCommentTemplate>
+                    <button class="btn btn-outline-secondary" type="button" (click)="addComment()">Comment</button>
+                </ng-template>
               </div>
             </div>
       </div>

@@ -23,6 +23,11 @@ export class CommentService {
     return this.http.delete<void>(url)
   }
 
+  updateComment(comment: Comment): Observable<Comment> {
+    const url = `${environment.baseUrl}/comment/${comment._id}`
+    return this.http.patch<Comment>(url, comment)
+  }
+
   addComment(comment: Comment): Observable<void> {
     const url = `${environment.baseUrl}/comment`
     return this.http.post<void>(url, comment)
