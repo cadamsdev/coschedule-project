@@ -1,42 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Song } from '../model/song';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MusicService {
+export class FavoriteService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getMusic(search: string): Observable<Song[]> {
-    const url = `${environment.baseUrl}/music`
-    const httpParams = new HttpParams()
-    .set('search', search)
-
-    return this.http.get<Song[]>(url, { params: httpParams })
-  }
-
-  getFavorites(): Observable<Song[]> {
-    const url = `${environment.baseUrl}/music/favorites`
+  getAll(): Observable<Song[]> {
+    const url = `${environment.baseUrl}/favorite`
     return this.http.get<Song[]>(url)
   }
 
-  deleteFavorite(song: Song): Observable<void> {
-    const url = `${environment.baseUrl}/music/favorite/${song.trackId}`
+  deleteOne(song: Song): Observable<void> {
+    const url = `${environment.baseUrl}/favorite/${song.trackId}`
     return this.http.delete<void>(url)
   }
 
-  getDiscover(): Observable<Song[]> {
-    const url = `${environment.baseUrl}/music/discover`
-    return this.http.get<Song[]>(url)
-  }
-
-  saveFavorite(song: Song): Observable<void> {
-    const url = `${environment.baseUrl}/music/favorite`
+  save(song: Song): Observable<void> {
+    const url = `${environment.baseUrl}/favorite`
     return this.http.post<void>(url, song)
     .pipe(
       catchError(this.handleError)

@@ -1,10 +1,12 @@
 const { Router } = require('express')
-const musicRouter = require('./music.router')
+const songRouter = require('./song.router')
 const commentRouter = require('./comment.router')
+const favoriteRouter = require('./favorite.router')
 
 const router = Router()
 
-router.use('/music', musicRouter)
+router.use('/song', songRouter)
 router.use('/comment', commentRouter)
+router.use('/favorite', favoriteRouter)
 
 module.exports = router

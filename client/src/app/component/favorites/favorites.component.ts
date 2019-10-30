@@ -1,6 +1,6 @@
+import { FavoriteService } from './../../service/favorite.service';
 import { AlertType } from './../../model/alert-type';
 import { Alert } from './../../model/alert';
-import { MusicService } from './../../service/music.service';
 import { Song } from './../../model/song';
 import { Component, OnInit } from '@angular/core';
 import { flatMap } from 'rxjs/operators';
@@ -13,16 +13,15 @@ import { flatMap } from 'rxjs/operators';
 export class FavoritesComponent implements OnInit {
 
   alertType = AlertType
-
   title = 'client';
   search: string;
   songs: Song[];
   alert: Alert;
 
-  constructor(private readonly service: MusicService) { }
+  constructor(private readonly favoriteService: FavoriteService) { }
 
   ngOnInit(): void {
-    this.service.getFavorites()
+    this.favoriteService.getAll()
     .subscribe((response) => {
       this.songs = response;
     })
@@ -33,11 +32,11 @@ export class FavoritesComponent implements OnInit {
   }
 
   onFavorite(song: Song) {
-    this.service.deleteFavorite(song)
+    this.favoriteService.deleteOne(song)
     .pipe(
       flatMap(() => {
         this.alert = new Alert(AlertType.SUCCESS, `Successfully deleted ${song.trackName}!`)
-        return this.service.getFavorites()
+        return this.favoriteService.getAll()
       })
     )
     .subscribe((songs) => {

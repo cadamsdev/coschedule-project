@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const songSchema = mongoose.Schema({
+const schema = mongoose.Schema({
     _id: Number,
     wrapperType: String,
     kind: String,
@@ -35,6 +35,6 @@ const songSchema = mongoose.Schema({
     isStreamable: Boolean
 })
 
-const Song = mongoose.model('Song', songSchema);
+const Favorite = mongoose.model('Favorite', schema);
 
-module.exports = Song
+module.exports = Favorite

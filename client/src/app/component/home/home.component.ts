@@ -1,6 +1,7 @@
+import { FavoriteService } from './../../service/favorite.service';
+import { SongService } from './../../service/song.service';
 import { flatMap } from 'rxjs/operators';
 import { CommentService } from './../../service/comment.service';
-import { MusicService } from './../../service/music.service';
 import { AlertType } from './../../model/alert-type';
 import { Song } from './../../model/song';
 import { Alert } from './../../model/alert';
@@ -31,12 +32,13 @@ export class HomeComponent implements OnInit {
   private _comment: String;
 
   constructor(
-    private readonly service: MusicService,
-    private readonly commentService: CommentService
+    private readonly songService: SongService,
+    private readonly commentService: CommentService,
+    private readonly favoriteService: FavoriteService
     ) { }
 
   ngOnInit(): void {
-    combineLatest([this.service.getDiscover(), this.commentService.getAll()])
+    combineLatest([this.songService.getDiscover(), this.commentService.getAll()])
     .subscribe(([discover, comments]) => {
       this.discoverySongs = discover
       this.updateCommentMap(comments);
@@ -60,8 +62,8 @@ export class HomeComponent implements OnInit {
 
   onSearch() {
     if (this.search) {
-      this.service
-      .getMusic(this.search)
+      this.songService
+      .getSongsBySearch(this.search)
       .subscribe((response) => {
         this.songs = response;
         this.search = null;
@@ -73,7 +75,6 @@ export class HomeComponent implements OnInit {
   }
 
   addComment(): void {
-    console.log('adding comment')
     if (this.comment && this.selectedSong && !this.selectedComment) {
       this.commentService
       .addComment({
@@ -160,8 +161,8 @@ export class HomeComponent implements OnInit {
   }
 
   onFavorite(song: Song) {
-    this.service.saveFavorite(song)
-    .subscribe((response) => {
+    this.favoriteService.save(song)
+    .subscribe(() => {
       this.alert = new Alert(AlertType.SUCCESS, "Success! Your favorite was saved!");
     }, err => {
       this.alert = new Alert(AlertType.ERROR, "Oops, there was an error.");
