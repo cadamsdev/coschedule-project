@@ -1,8 +1,12 @@
+import { flatMap } from 'rxjs/operators';
+import { CommentService } from './../../service/comment.service';
 import { MusicService } from './../../service/music.service';
 import { AlertType } from './../../model/alert-type';
 import { Song } from './../../model/song';
 import { Alert } from './../../model/alert';
 import { Component, OnInit } from '@angular/core';
+import { combineLatest } from 'rxjs';
+import { Comment } from '../../model/comment';
 
 @Component({
   selector: 'app-home',
@@ -17,17 +21,39 @@ export class HomeComponent implements OnInit {
   search: string;
   songs: Song[];
   alert: Alert;
-
+  comment: String;
+  selectedSong: Song;
+  comments: Comment[];
   discoverySongs: Song[];
 
-  constructor(private readonly service: MusicService) { }
+  commentMap = new Map<number, Comment[]>();
+
+  constructor(
+    private readonly service: MusicService,
+    private readonly commentService: CommentService
+    ) { }
 
   ngOnInit(): void {
-    this.service
-    .getDiscover()
-    .subscribe((response) => {
-      this.discoverySongs = response;
-    })
+    combineLatest([this.service.getDiscover(), this.commentService.getAll()])
+    .subscribe(([discover, comments]) => {
+      this.discoverySongs = discover
+      this.updateCommentMap(comments);
+      console.log(comments)
+    });
+  }
+
+  updateCommentMap(comments: Comment[]) {
+    if (comments) {
+      this.commentMap.clear()
+      for (const comment of comments) {
+        const value = this.commentMap.get(comment.trackId)
+        if (!value) {
+          this.commentMap.set(comment.trackId, [comment])
+        } else {
+          value.push(comment)
+        }
+      }
+    }
   }
 
   onSearch() {
@@ -44,8 +70,49 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  addComment() {
+    if (this.comment && this.selectedSong) {
+      this.commentService
+      .addComment({
+        _id: '-1',
+        msg: this.comment,
+        trackId: this.selectedSong.trackId,
+        dateAdded: new Date()
+      })
+      .pipe(
+        flatMap(() => {
+          return this.commentService.getAll()
+        })
+      )
+      .subscribe((comments) => {
+        console.log('added comment');
+        this.updateCommentMap(comments);
+        this.comments = this.commentMap.get(this.selectedSong.trackId)
+      })
+    }
+  }
+
+  getCommentCountForTrack(song: Song): number {
+    let count = 0
+
+    if (song) {
+      const comments = this.commentMap.get(song.trackId)
+      if (comments) {
+        count = comments.length;
+      }
+    }
+
+    return count
+  }
+
   onCloseAlert() {
     this.alert = null;
+  }
+
+  onShowCommentsModal(song: Song) {
+    this.selectedSong = song
+    this.comments = this.commentMap.get(song.trackId)
+    console.log(`show comments for song=${song.trackName}`)
   }
 
   onFavorite(song: Song) {

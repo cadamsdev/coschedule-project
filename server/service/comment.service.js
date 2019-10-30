@@ -9,7 +9,8 @@ function save(req) {
     const comment = new Comment({
         _id: new mongoose.Types.ObjectId(),
         msg: req.body.msg,
-        trackId: req.body.trackId
+        trackId: req.body.trackId,
+        dateAdded: new Date()
     })
 
     return comment.save()

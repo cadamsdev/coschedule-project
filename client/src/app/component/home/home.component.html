@@ -36,57 +36,89 @@
 </div>
 
 <div class="container">
-    <div class="row">
-      <div class="col">
-          <h4>Discovery:</h4>
+  <div class="row">
+    <div class="col">
+      <h4>Discovery:</h4>
+    </div>
+  </div>
+  <div *ngIf="discoverySongs" class="row">
+    <div *ngFor="let song of discoverySongs" class="col-4 mb-5">
+      <div class="card">
+        <div class="card-body">
+          <img class="img-fluid favorite-icon" style="width: 32px; position: absolute; top: 5px; right: 5px;"
+            src="assets/icons/favorite-icon.png" data-toggle="tooltip" title="Favorite" (click)="onFavorite(song)" />
+          <h5 class="card-title text-center" style="margin-top: 5px;">{{song.trackName}}</h5>
+          <p class="card-text text-center">{{song.artistName}}</p>
+          <img class="img-fluid rounded mx-auto d-block" style="margin-bottom: 5px;" src="{{song.artworkUrl100}}" />
+
+          <audio controls>
+            <source src="{{song.previewUrl}}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+
+        </div>
       </div>
     </div>
-    <div *ngIf="discoverySongs" class="row">
-        <div *ngFor="let song of discoverySongs" class="col-4 mb-5">
-          <div class="card">
-            <div class="card-body">
-              <img class="img-fluid favorite-icon" style="width: 32px; position: absolute; top: 5px; right: 5px;"
-                src="assets/icons/favorite-icon.png" data-toggle="tooltip" title="Favorite" (click)="onFavorite(song)" />
-              <h5 class="card-title text-center" style="margin-top: 5px;">{{song.trackName}}</h5>
-              <p class="card-text text-center">{{song.artistName}}</p>
-              <img class="img-fluid rounded mx-auto d-block" style="margin-bottom: 5px;" src="{{song.artworkUrl100}}" />
-  
-              <audio controls>
-                <source src="{{song.previewUrl}}" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-  
+  </div>
+
+  <ng-container *ngIf="songs">
+    <div class="row">
+      <div class="col">
+        <h4>Search Result:</h4>
+      </div>
+    </div>
+
+    <div *ngIf="songs" class="row">
+      <div *ngFor="let song of songs" class="col-4 mb-5">
+        <div class="card">
+          <div class="card-body">
+            <img class="img-fluid favorite-icon" style="width: 32px; position: absolute; top: 5px; right: 5px;"
+              src="assets/icons/favorite-icon.png" data-toggle="tooltip" title="Favorite" (click)="onFavorite(song)" />
+            <h5 class="card-title text-center" style="margin-top: 5px;">{{song.trackName}}</h5>
+            <p class="card-text text-center">{{song.artistName}}</p>
+            <img class="img-fluid rounded mx-auto d-block" style="margin-bottom: 5px;" src="{{song.artworkUrl100}}" />
+
+            <audio controls>
+              <source src="{{song.previewUrl}}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
+            <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentsModal" (click)="onShowCommentsModal(song)">
+                See Comments ({{getCommentCountForTrack(song)}})
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </ng-container>
 
-      <ng-container *ngIf="songs">
-          <div class="row">
-              <div class="col">
-                <h4>Search Result:</h4>
+</div>
+
+<div class="modal fade" id="commentsModal" tabindex="-1" role="dialog"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <ul *ngIf="comments" class="list-group">
+              <li *ngFor="let comment of comments" class="list-group-item" style="margin-bottom: 5px;">{{comment.msg}}</li>
+            </ul>
+      </div>
+      <div class="modal-footer">
+          <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Add a public comment..." [(ngModel)]="comment" >
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="addComment()">Comment</button>
               </div>
             </div>
-      
-          <div *ngIf="songs" class="row">
-              <div *ngFor="let song of songs" class="col-4 mb-5">
-                <div class="card">
-                  <div class="card-body">
-                    <img class="img-fluid favorite-icon" style="width: 32px; position: absolute; top: 5px; right: 5px;"
-                      src="assets/icons/favorite-icon.png" data-toggle="tooltip" title="Favorite" (click)="onFavorite(song)" />
-                    <h5 class="card-title text-center" style="margin-top: 5px;">{{song.trackName}}</h5>
-                    <p class="card-text text-center">{{song.artistName}}</p>
-                    <img class="img-fluid rounded mx-auto d-block" style="margin-bottom: 5px;" src="{{song.artworkUrl100}}" />
-        
-                    <audio controls>
-                      <source src="{{song.previewUrl}}" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                    </audio>
-        
-                  </div>
-                </div>
-              </div>
-            </div>
-      </ng-container>
-
+      </div>
+    </div>
+  </div>
 </div>
