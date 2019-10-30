@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { FavoritesComponent } from './favorites.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
   ]
 })
 export class FavoritesModule { }

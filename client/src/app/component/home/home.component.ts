@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
     .subscribe(([discover, comments]) => {
       this.discoverySongs = discover
       this.updateCommentMap(comments);
-      console.log(comments)
     });
   }
 
@@ -157,7 +156,6 @@ export class HomeComponent implements OnInit {
   onShowCommentsModal(song: Song) {
     this.selectedSong = song
     this.comments = this.commentMap.get(song.trackId)
-    console.log(`show comments for song=${song.trackName}`)
   }
 
   onFavorite(song: Song) {
