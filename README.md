@@ -1,6 +1,9 @@
 # iChad Music
 This is a simple app that lets you search songs using the [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/). You can play a preview, add a comment, or favorite a song.
 
+### Stack
+* MEAN (MongoDB, Express, Angular, and Node.js)
+
 ### Technologies & Libraries used
 * [NodeJS & Express](https://expressjs.com/) (Backend WebServer)
 * [Angular 8.2.12](https://angular.io/) (Frontend)
