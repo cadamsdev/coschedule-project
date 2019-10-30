@@ -56,6 +56,12 @@
             Your browser does not support the audio element.
           </audio>
 
+          <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentsModal" (click)="onShowCommentsModal(song)">
+                See Comments ({{getCommentCountForTrack(song)}})
+              </button>
+            </div>
+
         </div>
       </div>
     </div>

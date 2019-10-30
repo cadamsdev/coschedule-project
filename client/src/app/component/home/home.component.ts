@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe((comments) => {
-        console.log('added comment');
+        this.comment = null
         this.updateCommentMap(comments);
         this.comments = this.commentMap.get(this.selectedSong.trackId)
       })
