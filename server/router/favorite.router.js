@@ -10,7 +10,7 @@ router.get('/', (_, res) => {
     })
     .catch(err => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-            error: err
+            error: err.message
         })
     })
 })
@@ -33,8 +33,9 @@ router.post('/', (req, res) => {
         res.send()
     })
     .catch(err => {
-        res.status(HttpStatus.BAD_REQUEST)
-        res.send(err)
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 

@@ -5,23 +5,25 @@ const HttpStatus = require('http-status-codes')
 
 router.get('/', (req, res) => {
     service.find(req.query)
-    .then((response) => {
-        res.send(response.data.results);
+    .then(result => {
+        res.status(HttpStatus.OK).json(result.data.results)
     })
-    .catch((error) => {
-        response.status(HttpStatus.BAD_REQUEST)
-        response.send(error.response)
+    .catch(err => {
+        response.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 
-router.get('/discover', (req, res) => {
+router.get('/discover', (_, res) => {
     service.discover()
-    .then((response) => {
-        res.send(response.data.results)
+    .then(result => {
+        res.status(HttpStatus.OK).json(result.data.results)
     })
-    .catch((error) => {
-        response.status(HttpStatus.BAD_REQUEST)
-        response.send(error.response)
+    .catch(err => {
+        response.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 

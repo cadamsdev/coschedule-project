@@ -3,37 +3,39 @@ const router = new Router()
 const service = require('../service/comment.service')
 const HttpStatus = require('http-status-codes')
 
-router.get('/', (req, res) => {
+router.get('/', (_, res) => {
     service.find()
-    .then((response) => {
-        res.status(HttpStatus.OK).json(response);
+    .then(result => {
+        res.status(HttpStatus.OK).json(result);
     })
-    .catch((error) => {
-        response.status(HttpStatus.BAD_REQUEST)
-        response.send(error.response)
+    .catch(err => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 
 router.post('/', (req, res) => {
     service.save(req)
-    .then(() => {
-        res.status(HttpStatus.OK)
-        res.send()
+    .then(result => {
+        res.status(HttpStatus.OK).json(result)
     })
-    .catch((err) => {
-        res.status(HttpStatus.BAD_REQUEST)
-        res.send(err)
+    .catch(err => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 
 router.patch('/:id', (req, res) => {
     service.updateOne(req)
-    .then((result) => {
-        console.log(result)
+    .then(result => {
         res.status(HttpStatus.OK).json(result)
     })
-    .catch((err) => {
-        res.status(HttpStatus.BAD_REQUEST).json(err)
+    .catch(err => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 
@@ -43,9 +45,10 @@ router.delete('/:id', (req, res) => {
         res.status(HttpStatus.OK)
         res.send()
     })
-    .catch((err) => {
-        res.status(HttpStatus.BAD_REQUEST)
-        res.send(err)
+    .catch(err => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: err.message
+        })
     })
 })
 
